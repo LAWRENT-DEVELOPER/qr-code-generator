@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern QR Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        h2 { color: #333; margin-bottom: 1rem; }
+        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #007bff; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-bottom: 10px; }
+        .btn-generate { background-color: #007bff; color: white; }
+        .btn-generate:hover { background-color: #0056b3; }
+        .btn-download { background-color: #28a745; color: white; display: none; }
+        .btn-download:hover { background-color: #218838; }
+        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
+        canvas { border: 1px solid #eee; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>QR Generator 🚀</h2>
+    <input type="text" id="text-input" placeholder="Weka URL au Maandishi">
+    <button class="btn-generate" onclick="generateQR()">Tengeneza QR Code</button>
+    
+    <div id="qrcode"></div>
+    
+    <button id="download-btn" class="btn-download" onclick="downloadQR()">Pakua Picha (Download)</button>
+</div>
+
+<script>
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width: 180,
+        height: 180
+    });
+
+    function generateQR() {
+        var text = document.getElementById("text-input").value;
+        if (text.trim() !== "") {
+            qrcode.makeCode(text);
+            document.getElementById("download-btn").style.display = "block";
+        } else {
+            alert("Tafadhali weka kitu!");
+        }
+    }
+
+    function downloadQR() {
+        // Tunapata picha kutoka kwenye canvas iliyotengenezwa na library
+        var img = document.querySelector('#qrcode img');
+        var canvas = document.querySelector('#qrcode canvas');
+        
+        var link = document.createElement('a');
+        link.download = 'my-qrcode.png';
+        
+        if (canvas) {
+            link.href = canvas.toDataURL("image/png");
+        } else {
+            link.href = img.src;
+        }
+        link.click();
+    }
+</script>
+
+</body>
+</html>
